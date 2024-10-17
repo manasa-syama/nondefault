@@ -65,6 +65,8 @@ jobs:
       # Step 5: Merge origin/develop into BR_Phase2
 
       - name: Merge origin/develop into BR_Phase2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
         run: |
 
@@ -72,4 +74,5 @@ jobs:
 
           git push origin BR_Phase2
 
+      
  
