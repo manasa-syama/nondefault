@@ -36,7 +36,7 @@ jobs:
 
       - name: Merge back to target branch
         run: |
-          git checkout target_branch  # Switch back to the target branch
+          git checkout target  # Switch back to the target branch
           output=$(git merge temp_branch 2>&1)  # Attempt to merge the temporary branch
           
           if [ $? -ne 0 ]; then
