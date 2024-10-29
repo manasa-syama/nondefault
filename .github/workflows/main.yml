@@ -19,7 +19,7 @@ jobs:
 
       - name: Create temporary branch from target
         run: |
-          git checkout target_branch  # Replace with your target branch
+          git checkout target  # Replace with your target branch
           git checkout -b temp_branch  # Create a new temporary branch
 
       - name: Sync code from source to temporary branch
