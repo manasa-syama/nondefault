@@ -1,0 +1,52 @@
+name: Sync and Merge Workflow
+
+on:
+  push:
+    branches:
+      - source1  # Trigger on pushes to source1
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
+jobs:
+  sync_and_merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Fetch branches
+        run: git fetch origin
+
+      - name: Create temporary branch from target
+        run: |
+          git checkout target_branch  # Replace with your target branch
+          git checkout -b temp_branch  # Create a new temporary branch
+
+      - name: Sync code from source to temporary branch
+        run: |
+          output=$(git merge origin/source1 2>&1)  # Attempt to merge and capture output
+          
+          if [ $? -ne 0 ]; then
+            echo "Merge failed: $output"  # Print the error message
+            echo "error_message=Merge conflicts detected in temp_branch." >> $GITHUB_ENV  # Set environment variable
+            exit 1  # Exit with an error code
+          fi
+
+          echo "Sync succeeded: $output"  # Print success message
+
+      - name: Merge back to target branch
+        run: |
+          git checkout target_branch  # Switch back to the target branch
+          output=$(git merge temp_branch 2>&1)  # Attempt to merge the temporary branch
+          
+          if [ $? -ne 0 ]; then
+            echo "Final merge failed: $output"  # Print the error message
+            echo "error_message=Final merge failed." >> $GITHUB_ENV  # Set environment variable
+            exit 1  # Exit with an error code
+          fi
+
+          echo "Final merge succeeded: $output"  # Print success message
+          
+      - name: Cleanup
+        run: |
+          git branch -D temp_branch  # Delete the temporary branch
