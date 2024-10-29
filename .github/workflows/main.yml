@@ -19,7 +19,7 @@ jobs:
 
       - name: Create temporary branch from target
         run: |
-          git branch -r
+          git branch 
           git checkout target # Replace with your target branch
           # git pull origin/target
           # git branch temp_branch   
