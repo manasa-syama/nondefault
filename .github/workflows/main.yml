@@ -21,9 +21,9 @@ jobs:
         run: |
           git branch -r
           git checkout target # Replace with your target branch
-          git pull origin/target
-          git branch temp_branch   
-          git push origin temp_branch  # Push the temporary branch to remote
+          # git pull origin/target
+          # git branch temp_branch   
+          # git push origin temp_branch  # Push the temporary branch to remote
 
       # - name: Sync code from source to temporary branch
       #   run: |
