@@ -25,24 +25,19 @@ jobs:
 
       - name: Sync code from source to temporary branch
         run: |
-          output=$(git merge origin/source --no-commit 2>&1)  # Attempt to merge without committing
+          output=$(git merge origin/source1 --no-commit 2>&1)  # Attempt to merge without committing
           
           if [ $? -ne 0 ]; then
-            echo "$output"  # Print the output for debugging
-
             if echo "$output" | grep -q "CONFLICT"; then
               echo "Merge conflicts detected in temp_branch."  # Print the error message
               echo "error_message=Merge conflicts detected." >> $GITHUB_ENV  # Set environment variable
+              exit 1  # Exit with an error code
             else
               echo "Merge failed for another reason: $output"  # Handle other merge failures
               echo "error_message=Merge failed for another reason." >> $GITHUB_ENV
+              exit 1  # Exit with an error code
             fi
-            
-            exit 1  # Exit with an error code
           fi
-
-          echo "Sync succeeded: $output"  # Print success message
-
 
           echo "Sync succeeded: $output"  # Print success message
 
