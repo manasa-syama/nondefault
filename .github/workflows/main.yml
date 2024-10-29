@@ -3,7 +3,7 @@ name: Sync and Merge Workflow
 on:
   push:
     branches:
-      - source1  # Trigger on pushes to source1
+      - source # Trigger on pushes to source1
   workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
