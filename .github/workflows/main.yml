@@ -21,6 +21,7 @@ jobs:
         run: |
           git checkout target  # Replace with your target branch
           git checkout -b temp_branch  # Create a new temporary branch
+          git push origin temp_branch
 
       - name: Sync code from source to temporary branch
         run: |
