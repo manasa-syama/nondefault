@@ -23,41 +23,40 @@ jobs:
           git checkout target # Replace with your target branch
           git pull origin/target
           git checkout -b temp_branch  origin/target 
-          # git checkout -b temp_branch  # Create a new temporary branch
           git push origin temp_branch  # Push the temporary branch to remote
 
-      - name: Sync code from source to temporary branch
-        run: |
-          output=$(git merge origin/source1 --no-commit 2>&1)  # Attempt to merge without committing
+      # - name: Sync code from source to temporary branch
+      #   run: |
+      #     output=$(git merge origin/source1 --no-commit 2>&1)  # Attempt to merge without committing
           
-          if [ $? -ne 0 ]; then
-            if echo "$output" | grep -q "CONFLICT"; then
-              echo "Merge conflicts detected in temp_branch."  # Print the error message
-              echo "error_message=Merge conflicts detected." >> $GITHUB_ENV  # Set environment variable
-              exit 1  # Exit with an error code
-            else
-              echo "Merge failed for another reason: $output"  # Handle other merge failures
-              echo "error_message=Merge failed for another reason." >> $GITHUB_ENV
-              exit 1  # Exit with an error code
-            fi
-          fi
+      #     if [ $? -ne 0 ]; then
+      #       if echo "$output" | grep -q "CONFLICT"; then
+      #         echo "Merge conflicts detected in temp_branch."  # Print the error message
+      #         echo "error_message=Merge conflicts detected." >> $GITHUB_ENV  # Set environment variable
+      #         exit 1  # Exit with an error code
+      #       else
+      #         echo "Merge failed for another reason: $output"  # Handle other merge failures
+      #         echo "error_message=Merge failed for another reason." >> $GITHUB_ENV
+      #         exit 1  # Exit with an error code
+      #       fi
+      #     fi
 
-          echo "Sync succeeded: $output"  # Print success message
+          # echo "Sync succeeded: $output"  # Print success message
 
-      - name: Merge back to target branch
-        run: |
-          git checkout target # Switch back to the target branch
-          output=$(git merge temp_branch 2>&1)  # Attempt to merge the temporary branch
+      # - name: Merge back to target branch
+      #   run: |
+      #     git checkout target # Switch back to the target branch
+      #     output=$(git merge temp_branch 2>&1)  # Attempt to merge the temporary branch
           
-          if [ $? -ne 0 ]; then
-            echo "Final merge failed: $output"  # Print the error message
-            echo "error_message=Final merge failed." >> $GITHUB_ENV  # Set environment variable
-            exit 1  # Exit with an error code
-          fi
+      #     if [ $? -ne 0 ]; then
+      #       echo "Final merge failed: $output"  # Print the error message
+      #       echo "error_message=Final merge failed." >> $GITHUB_ENV  # Set environment variable
+      #       exit 1  # Exit with an error code
+      #     fi
 
-          echo "Final merge succeeded: $output"  # Print success message
+      #     echo "Final merge succeeded: $output"  # Print success message
           
-      - name: Cleanup
-        run: |
-          git branch -D temp_branch  # Delete the temporary branch locally
-          git push origin --delete temp_branch  # Delete the temporary branch from remote
+      # - name: Cleanup
+      #   run: |
+      #     git branch -D temp_branch  # Delete the temporary branch locally
+      #     git push origin --delete temp_branch  # Delete the temporary branch from remote
